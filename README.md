@@ -7,7 +7,8 @@ Tensorflow + Scikit based library for High Frequency Day Trading
  __  / / /  _ \  _ \__  __ \_  /_   __  /_  __ \_ | /| / /
  _  /_/ //  __/  __/_  /_/ /  __/   _  / / /_/ /_ |/ |/ / 
  /_____/ \___/\___/_  .___//_/      /_/  \____/____/|__/  
-                  /_/                                    ```
+                  /_/                                    
+```
 
 ## Prerequisites
 
