@@ -11,7 +11,7 @@ import numpy as np
 
 __author__ = 'yazan'
 
-class DeepFlow(object):
+class Learn(object):
     def __init__(self, dataset_object):
         print('Initializing DeepFlow: {}'.format(dataset_object.name))
 

@@ -19,6 +19,8 @@ Git & Virtualenv
 
 ## Installation
 
+Clone repository and run: 
+
 `$ ./install.sh`
 
 ## Usage

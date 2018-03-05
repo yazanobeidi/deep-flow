@@ -8,6 +8,7 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 __author__ = 'yazan'
 
@@ -16,11 +17,12 @@ class View(object):
         print('Initializing Deepflow Viewer: {}'.format(dataset_object.name))
         self.dataset = dataset_object
 
-    def table(self):
-        pass
+    def table(self, df):
+        return df
 
-    def plot(self):
-        pass
+    def plot(self, df, x, y=None):
+        #dfy = df.loc[:, df.columns != str(x_label)]
+        df.plot(x=x, y=y, figsize=(10,8))
 
     def histogram(self):
         pass
