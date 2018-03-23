@@ -9,6 +9,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+pd.options.mode.chained_assignment = None
 
 __author__ = 'yazan'
 
@@ -20,9 +21,9 @@ class View(object):
     def table(self, df):
         return df
 
-    def plot(self, df, x, y=None):
+    def plot(self, df, x, y=None, title=None):
         #dfy = df.loc[:, df.columns != str(x_label)]
-        df.plot(x=x, y=y, figsize=(10,8))
+        df.plot(x=x, y=y, figsize=(10,8), title=title)
 
     def histogram(self):
         pass

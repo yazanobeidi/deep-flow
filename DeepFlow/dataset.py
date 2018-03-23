@@ -14,15 +14,16 @@ from sklearn import preprocessing
 from sklearn import model_selection
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
+pd.options.mode.chained_assignment = None
 
 __author__ = 'yazan'
 
 class Dataset(object):
-    def __init__(self, dataset_name, read_conf={}, big_data=False,debug=False):
+    def __init__(self, dataset_name, pd_conf={}, big_data=False,debug=False):
         """
         Params:
             dataset_name: project folder name in data directory (string)
-            read_conf: kwargs for pd.csv_read() (dict)
+            pd_conf: kwargs for pd.csv_read() (dict)
             big_data: if true, entire dataset loaded into memory otherwise
                         data is always sampled. Warning: Not implemented yet.
         """
@@ -38,7 +39,7 @@ class Dataset(object):
             # be affected depending on how this is implemented. TODO.
             raise NotImplementedError
         else:
-            self._data = self._load_complete_dataset(read_conf,debug)
+            self._data = self._load_complete_dataset(pd_conf,debug)
         print("Finished loading dataset. Printing 1 example row:")
         print(self._data.iloc[0])
 
@@ -60,6 +61,16 @@ class Dataset(object):
                   "this as {}".format(self.config.get('DeepFlow', 'path')))
             raise
 
+    @staticmethod
+    def _convert_string_to_datetime(df):
+        """Converts all date strings to datetime objects.
+        """
+        date_mask = ['date' in col for col in list(df.columns)]
+        column_string = df.columns[date_mask].tolist()[0]
+        df[column_string] = pd.to_datetime(df[column_string])
+        return df
+
+
     def _load_complete_dataset(self, read_conf, debug):
         """Returns a pandas DataFrame object of the entire dataset.
         """
@@ -69,6 +80,7 @@ class Dataset(object):
         # sort the files in the directory in asccending numerical order,
         # if there is a number at the end of the file name
         data_dir.sort(key=lambda x: '{0:0>256}'.format(x).lower())
+        debug_count = 7
         for f_name in data_dir:
             if f_name.endswith(".csv") and f_name is not self.header[1]:
                 _subset = pd.read_csv(os.path.join(self.path,f_name),
@@ -76,9 +88,10 @@ class Dataset(object):
                 _subsets.append(_subset)
                 # Clear so if read_csv fails silently we still catch it
                 _subset = None
-                if debug:
+                if debug and debug_count < 0:
                     break
                 print("\rstill processing ...")
+                debug_count -= 1
         dataframe = pd.concat(_subsets, ignore_index=True)
         # Remove any rows that match the header
         for head in self.header[0]:
@@ -86,7 +99,7 @@ class Dataset(object):
                 dataframe = dataframe[dataframe[str(head)] != head]
             except TypeError:
                 pass
-        return dataframe
+        return self._convert_string_to_datetime(dataframe)
 
     def data(self):
         return self._data

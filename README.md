@@ -12,7 +12,7 @@ Tensorflow + Scikit based library for High Frequency Day Trading
 
 ## Prerequisites
 
-Git & Virtualenv
+Git, Virtualenv, Linux
 
 1. `$ sudo apt install git`
 2. `$ pip3 install virtualenv`
