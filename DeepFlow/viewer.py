@@ -21,9 +21,12 @@ class View(object):
     def table(self, df):
         return df
 
-    def plot(self, df, x, y=None, title=None):
-        #dfy = df.loc[:, df.columns != str(x_label)]
-        df.plot(x=x, y=y, figsize=(10,8), title=title)
+    def plot(self, df, x=None, y=None, title=None, reindex_like=None, logx=False):
+        if type(df) == type(list()):
+            reindex = df[0] if reindex_like is None else reindex_like
+            df = pd.concat([d.reset_index(drop=True) for d in df], axis=1)
+        x_label = df.index if x is None else x
+        df.plot(x=x_label, y=y, figsize=(10,8), title=title, logx=logx)
 
     def histogram(self):
         pass

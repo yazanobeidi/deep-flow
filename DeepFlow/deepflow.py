@@ -38,7 +38,7 @@ class Learn(object):
 
     @staticmethod
     def rmse(predictions, actual):
-        yhat = np.array([p['predictions'] for p in predictions])
+        yhat = np.array(predictions.values.tolist())
         y = np.array(actual.values.tolist())
         return np.mean(np.sqrt((yhat-y)**2))
 
@@ -83,7 +83,11 @@ class Learn(object):
                                             param.keys() else 100
                 prediction = self.model.predict(input_fn=
                     lambda:self._predict_input_func(x, batch_size))
-                return prediction
+                pred = [p for p in prediction]
+                pred = [{'predictions': p['predictions'][0]} for p in pred]
+                pred_dataframe = pd.DataFrame(pred)
+                #pred_dataframe = pred_dataframe.apply(lambda x: x[0])
+                return pred_dataframe
             else:
                 print('Must train a model before running predictions.')
         else:
